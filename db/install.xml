@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="mod/user_report/db" VERSION="20130407" COMMENT="XMLDB Maximum Concurrent Users Count"
+<XMLDB PATH="local/user_report/db" VERSION="20130407" COMMENT="XMLDB Maximum Concurrent Users Count"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >

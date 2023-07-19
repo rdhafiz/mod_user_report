@@ -1,11 +1,8 @@
 # Local message
 
-This is a test message
+Plugin to run the schedule script to generate User Online Report
 
-## Functionality
-- This is a test message
-- This is a test message
-- This is a test message
-- This is a test message
-- This is a test message
-- This is a test message
+## Run Schedule
+```
+php admin/cli/scheduled_task.php --execute=local_user_report\task\UserReport
+```

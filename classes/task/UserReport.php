@@ -3,12 +3,12 @@
 /**
  * The schedule Task class file - UserReport
  *
- * @package     mod_user_report
+ * @package     local_user_report
  * @author      Ridwanul Hafiz
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace mod_user_report\task;
+namespace local_user_report\task;
 
 use core\task\scheduled_task;
 
@@ -23,7 +23,7 @@ class UserReport extends scheduled_task {
     public function get_name()
     {
         // TODO: Implement get_name() method.
-        return get_string('taskname', 'mod_user_report');
+        return get_string('taskname', 'local_user_report');
     }
 
     public function execute($testing = null)
@@ -68,7 +68,7 @@ class UserReport extends scheduled_task {
 
             $report = array(
                 'id' => $reportLog->id,
-                'active_users' => $rv['active_users'],
+                'active_users' => $rv['active_users'] > 0 ? $rv['active_users'] : $rv['concurrent_users'],
                 'concurrent_users' => $rv['concurrent_users'],
                 'last_report_logged_at' => date('Y-m-d H:i:s'),
                 'report_sent' => !$lastReport ? 1 : 0,
@@ -78,7 +78,7 @@ class UserReport extends scheduled_task {
 
         } else {
             $report = new \stdClass();
-            $report->active_users = $rv['active_users'];
+            $report->active_users = $rv['active_users'] > 0 ? $rv['active_users'] : $rv['concurrent_users'];
             $report->concurrent_users = $rv['concurrent_users'];
             $report->last_report_logged_at = date('Y-m-d H:i:s');
             $DB->insert_record('report_concurrent_users', $report);
@@ -98,6 +98,13 @@ class UserReport extends scheduled_task {
                 if ($admin) {
                     email_to_user($admin, 'moodle@thethemeai.com', 'Moodle User Report', html_to_text($messageBody), $messageBody);
                 }
+
+                $reportUpdate = array(
+                    'id' => $reportLog->id,
+                    'report_sent' => 1,
+                    'last_report_sent_at' => date('Y-m-d H:i:s')
+                );
+                $DB->update_record('report_concurrent_users', $reportUpdate);
             }
         }
 
