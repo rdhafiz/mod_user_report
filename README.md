@@ -1,4 +1,4 @@
-# Local message
+# Local User Online Report
 
 Plugin to run the schedule script to generate User Online Report
 
